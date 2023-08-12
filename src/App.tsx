@@ -1,3 +1,5 @@
+import { Heading } from "@chakra-ui/react";
+
 export default function App() {
-  return <h1>Kanban</h1>;
+  return <Heading as="h1">Simple Kanban</Heading>;
 }
