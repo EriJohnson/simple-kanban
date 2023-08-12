@@ -1,5 +1,5 @@
-import { Heading } from "@chakra-ui/react";
+import Board from "@/components/Board";
 
 export default function App() {
-  return <Heading as="h1">Simple Kanban</Heading>;
+  return <Board />;
 }

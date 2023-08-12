@@ -16,8 +16,8 @@ const styles = {
     },
     body: {
       margin: 0,
-      display: "flex",
       minHeight: "100vh",
+      color: "#5A5A65",
     },
   },
 };
@@ -35,6 +35,14 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ styles, fonts, colors });
+const components = {
+  Heading: {
+    baseStyle: {
+      color: "#212121",
+    },
+  },
+};
+
+const theme = extendTheme({ styles, fonts, colors, components });
 
 export default theme;
