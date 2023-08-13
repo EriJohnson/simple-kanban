@@ -14,10 +14,19 @@ const styles = {
       MozOsxFontSmoothing: "grayscale",
       WebkitTextSizeAdjust: "100%",
     },
-    body: {
+    "html, body": {
       margin: 0,
+      padding: 0,
+      height: "100%",
       minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+    },
+    body: {
       color: "#5A5A65",
+    },
+    "::-webkit-scrollbar": {
+      display: "none",
     },
   },
 };
