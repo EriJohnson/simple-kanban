@@ -1,29 +1,28 @@
 import { Task } from "@/types/Task";
+import formatDate from "@/utils/formatDate";
 import {
-  Badge,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   HStack,
   Heading,
+  Icon,
   Text,
 } from "@chakra-ui/react";
-import LocationIcon from "../icons/Location";
-import formatDate from "@/utils/formatDate";
+import { MdLocationPin as LocationIcon } from "react-icons/md";
+import PriorityBadge from "../Badges/PriorityBadge";
 
-function getColorScheme(type: Task["priority"]) {
-  switch (type) {
-    case "critical":
-      return "red";
-    case "high":
-      return "yellow";
-    case "low":
-      return "gray";
-  }
+interface TaskCardProps {
+  task: Task;
+  onClick: (task: Task) => void;
 }
 
-export default function TaskCard(task: Task) {
+export default function TaskCard({ task, onClick }: TaskCardProps) {
+  function handleClick() {
+    onClick(task);
+  }
+
   return (
     <Card
       w="full"
@@ -37,6 +36,7 @@ export default function TaskCard(task: Task) {
         boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)",
         bg: "#F8F8F8",
       }}
+      onClick={handleClick}
     >
       <CardHeader px={4} pb={0}>
         <Heading fontSize="md" fontWeight="semibold">
@@ -45,21 +45,15 @@ export default function TaskCard(task: Task) {
       </CardHeader>
 
       <CardBody px={4} py={0}>
-        <Text>
-          <LocationIcon mr={1} />
-          {task.location}
-        </Text>
+        <HStack spacing={1}>
+          <Icon as={LocationIcon} />
+          <Text as="span">{task.location}</Text>
+        </HStack>
       </CardBody>
 
       <CardFooter px={4}>
         <HStack w="full" justify="space-between">
-          <Badge
-            colorScheme={getColorScheme(task.priority)}
-            borderRadius="md"
-            paddingX={1}
-          >
-            {task.priority}
-          </Badge>
+          <PriorityBadge priority={task.priority} />
 
           <Text fontSize="sm">{formatDate(task.date)}</Text>
         </HStack>
