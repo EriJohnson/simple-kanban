@@ -1,11 +1,6 @@
-import {
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Icon, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { MdSearch } from "react-icons/md";
+import { MdSearch as SearchIcon } from "react-icons/md";
 
 interface SearchInputProps {
   onChange: (value: string) => void;
@@ -37,33 +32,16 @@ export default function SearchInput({ onChange }: SearchInputProps) {
   }
 
   return (
-    <InputGroup maxW="50%">
+    <InputGroup>
       <Input
         value={value}
         onChange={handleChange}
         onKeyDown={handleSearchInputKeyDown}
-        placeholder="Search for a task"
-        bg="white"
-        borderRadius="lg"
-        border="1px solid #DDD"
-        boxShadow="0px 2px 4px 0px rgba(0, 0, 0, 0.08)"
-        cursor="pointer"
-        transition="all 0.2s"
-        color="#5A5A65"
-        focusBorderColor="#DDD"
+        placeholder="Search"
       />
 
       <InputRightElement
-        overflow="hidden"
-        fontSize="2xl"
-        children={
-          <IconButton
-            variant="ghost"
-            _hover={{ bg: "gray.50" }}
-            aria-label="Buscar"
-            icon={<MdSearch color="#A0AEC0" />}
-          />
-        }
+        children={<Icon boxSize={5} color="#5A5A65" as={SearchIcon} />}
       />
     </InputGroup>
   );

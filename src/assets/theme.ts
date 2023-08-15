@@ -1,5 +1,20 @@
 import { extendTheme } from "@chakra-ui/react";
 
+const FILTER_STYLES = {
+  baseStyle: {
+    field: {
+      borderRadius: "lg",
+      border: "1px solid #DDD",
+      boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.08)",
+      cursor: "pointer",
+      color: "#5A5A65",
+    },
+  },
+  defaultProps: {
+    focusBorderColor: "#DDD",
+  },
+};
+
 const styles = {
   global: {
     ":root": {
@@ -50,6 +65,8 @@ const components = {
       color: "#212121",
     },
   },
+  Input: FILTER_STYLES,
+  Select: FILTER_STYLES,
 };
 
 const theme = extendTheme({ styles, fonts, colors, components });

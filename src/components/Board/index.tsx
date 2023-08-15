@@ -36,7 +36,7 @@ export default function Board() {
         padding={{ base: 4, md: 10 }}
         overflow="hidden"
       >
-        <HStack justify="space-between">
+        <HStack justify="space-between" align="start">
           <Box>
             <Heading as="h1" fontSize="2rem">
               Simple Kanban
