@@ -1,5 +1,5 @@
 import { Task } from "@/types/Task";
-import { createContext, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import mock from "../mock";
 
 interface TasksContextProps {
@@ -7,6 +7,7 @@ interface TasksContextProps {
   todoTasks: Task[];
   inProgressTasks: Task[];
   doneTasks: Task[];
+  isSearchResultEmpty: boolean;
   addTask: (task: Task) => void;
   deleteTask: (id: number) => void;
   editTask: (id: number, newTask: Task) => void;
@@ -35,27 +36,38 @@ export function TasksProvider({ children }: TasksProviderProps) {
     setTasks(tasks.map((task) => (task.id === id ? newTask : task)));
   }
 
-  function handleSearch(search: string) {
+  const handleSearch = useCallback((search: string) => {
     setSearch(search);
-  }
+  }, []);
 
-  const filteredTasks = tasks.filter((task) =>
-    task.name.toLowerCase().includes(search.toLowerCase())
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) =>
+      task.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, tasks]);
+
+  const todoTasks: Task[] = filteredTasks.filter(
+    (task) => task.status === "todo"
   );
 
-  const todoTasks: Task[] = tasks.filter((task) => task.status === "todo");
-
-  const inProgressTasks: Task[] = tasks.filter(
+  const inProgressTasks: Task[] = filteredTasks.filter(
     (task) => task.status === "inProgress"
   );
 
-  const doneTasks: Task[] = tasks.filter((task) => task.status === "done");
+  const doneTasks: Task[] = filteredTasks.filter(
+    (task) => task.status === "done"
+  );
+
+  const isSearchResultEmpty = useMemo(() => {
+    return filteredTasks.length === 0 && search.length > 0;
+  }, [filteredTasks.length, search.length]);
 
   const value = {
     tasks: filteredTasks,
     todoTasks,
     inProgressTasks,
     doneTasks,
+    isSearchResultEmpty,
     addTask,
     deleteTask,
     editTask,
