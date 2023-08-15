@@ -1,5 +1,10 @@
 import Board from "@/components/Board";
+import { TasksProvider } from "./contexts/TasksContext";
 
 export default function App() {
-  return <Board />;
+  return (
+    <TasksProvider>
+      <Board />
+    </TasksProvider>
+  );
 }
