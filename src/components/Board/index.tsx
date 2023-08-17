@@ -8,16 +8,18 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import { DragDropContext } from "@hello-pangea/dnd";
 import Column from "../Column";
 import Filters from "../Filters";
 import NotFound from "../NotFound";
 import TaskCard from "../TaskCard";
 import TaskModal from "../TaskModal";
 import useBoard from "./useBoard";
+import useColumns from "@/hooks/useColumns";
 
 export default function Board() {
-  const { todoTasks, inProgressTasks, doneTasks, isSearchResultEmpty } =
-    useTasks();
+  const { isSearchResultEmpty } = useTasks();
+  const { columns, handleDragEnd } = useColumns();
 
   const {
     isTaskModalOpen,
@@ -55,41 +57,26 @@ export default function Board() {
           padding={5}
           overflow="hidden"
         >
-          {!isSearchResultEmpty ? (
-            <SimpleGrid flex={1} columns={{ base: 1, md: 3 }} spacing={10}>
-              <Column status="todo">
-                {todoTasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onClick={handleTaskClick}
-                  />
+          <DragDropContext onDragEnd={handleDragEnd}>
+            {!isSearchResultEmpty ? (
+              <SimpleGrid flex={1} columns={{ base: 1, md: 3 }} spacing={10}>
+                {columns.map((column) => (
+                  <Column key={column.id} id={column.id}>
+                    {column.tasks.map((task, index) => (
+                      <TaskCard
+                        key={task.id}
+                        index={index}
+                        task={task}
+                        onClick={handleTaskClick}
+                      />
+                    ))}
+                  </Column>
                 ))}
-              </Column>
-
-              <Column status="inProgress">
-                {inProgressTasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onClick={handleTaskClick}
-                  />
-                ))}
-              </Column>
-
-              <Column status="done">
-                {doneTasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onClick={handleTaskClick}
-                  />
-                ))}
-              </Column>
-            </SimpleGrid>
-          ) : (
-            <NotFound />
-          )}
+              </SimpleGrid>
+            ) : (
+              <NotFound />
+            )}
+          </DragDropContext>
         </Flex>
 
         {selectedTask && (

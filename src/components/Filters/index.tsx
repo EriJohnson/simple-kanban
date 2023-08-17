@@ -11,7 +11,10 @@ import SearchInput from "./SearchInput";
 export default function Filters() {
   const {
     locationsFilter,
-    hasFilters,
+    hasFilter,
+    statusFilter,
+    locationFilter,
+    priorityFilter,
     handleSearch,
     handleStatusFilter,
     handleLocationFilter,
@@ -24,6 +27,7 @@ export default function Filters() {
       <SearchInput onChange={handleSearch} />
 
       <FilterSelect
+        value={statusFilter}
         name="Status"
         icon={StatusIcon}
         onChange={handleStatusFilter}
@@ -31,6 +35,7 @@ export default function Filters() {
       />
 
       <FilterSelect
+        value={locationFilter}
         name="Location"
         icon={LocationIcon}
         onChange={handleLocationFilter}
@@ -38,13 +43,14 @@ export default function Filters() {
       />
 
       <FilterSelect
+        value={priorityFilter}
         name="Priority"
         icon={PriorityIcon}
         onChange={handlePriorityFilter}
         options={["low", "high", "critical"]}
       />
 
-      {hasFilters && (
+      {hasFilter && (
         <Tooltip label="Clear Filters">
           <CloseButton onClick={clearFilters} />
         </Tooltip>

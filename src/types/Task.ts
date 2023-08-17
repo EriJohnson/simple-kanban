@@ -1,3 +1,5 @@
+import { Status } from "./Status";
+
 export interface Task {
   id: number;
   name: string;
@@ -6,5 +8,5 @@ export interface Task {
   priority: "low" | "high" | "critical";
   description: string;
   attachments?: string[];
-  status: "todo" | "inProgress" | "done";
+  status: Status;
 }

@@ -9,14 +9,16 @@ interface TasksContextProps {
   doneTasks: Task[];
   isSearchResultEmpty: boolean;
   locationsFilter: Task["location"][];
-  hasFilters: boolean;
-  addTask: (task: Task) => void;
-  deleteTask: (id: number) => void;
+  hasFilter: boolean;
+  statusFilter: string;
+  locationFilter: string;
+  priorityFilter: string;
+  handleTasksChange: (newTasks: Task[]) => void;
   editTask: (id: number, newTask: Task) => void;
   handleSearch: (search: string) => void;
-  handleStatusFilter: (status: string | null) => void;
-  handleLocationFilter: (location: string | null) => void;
-  handlePriorityFilter: (priority: string | null) => void;
+  handleStatusFilter: (status: string) => void;
+  handleLocationFilter: (location: string) => void;
+  handlePriorityFilter: (priority: string) => void;
   clearFilters: () => void;
 }
 
@@ -27,36 +29,29 @@ interface TasksProviderProps {
 export const TasksContext = createContext({} as TasksContextProps);
 
 export function TasksProvider({ children }: TasksProviderProps) {
-  const [tasks, setTasks] = useState<Task[]>(mock as Task[]);
+  const [tasks, setTasks] = useState<Task[]>(mock.mockTasks as Task[]);
   const [search, setSearch] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [locationFilter, setLocationFilter] = useState<string>("");
+  const [priorityFilter, setPriorityFilter] = useState<string>("");
 
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
-
-  const [locationFilter, setLocationFilter] = useState<string | null>(null);
-
-  const [priorityFilter, setPriorityFilter] = useState<string | null>(null);
-
-  function addTask(task: Task) {
-    setTasks([...tasks, task]);
-  }
-
-  function deleteTask(id: number) {
-    setTasks(tasks.filter((task) => task.id !== id));
+  function handleTasksChange(newTasks: Task[]) {
+    setTasks(newTasks);
   }
 
   function editTask(id: number, newTask: Task) {
     setTasks(tasks.map((task) => (task.id === id ? newTask : task)));
   }
 
-  function handleStatusFilter(status: string | null) {
+  function handleStatusFilter(status: string) {
     setStatusFilter(status);
   }
 
-  function handleLocationFilter(location: string | null) {
+  function handleLocationFilter(location: string) {
     setLocationFilter(location);
   }
 
-  function handlePriorityFilter(priority: string | null) {
+  function handlePriorityFilter(priority: string) {
     setPriorityFilter(priority);
   }
 
@@ -65,9 +60,9 @@ export function TasksProvider({ children }: TasksProviderProps) {
   }, []);
 
   function clearFilters() {
-    setStatusFilter(null);
-    setLocationFilter(null);
-    setPriorityFilter(null);
+    setStatusFilter("");
+    setLocationFilter("");
+    setPriorityFilter("");
     setSearch("");
   }
 
@@ -93,17 +88,13 @@ export function TasksProvider({ children }: TasksProviderProps) {
     (task) => task.status === "done"
   );
 
-  const hasFilters = useMemo(() => {
-    return (
-      statusFilter !== null ||
-      locationFilter !== null ||
-      priorityFilter !== null
-    );
+  const hasFilter = useMemo(() => {
+    return !!statusFilter || !!locationFilter || !!priorityFilter;
   }, [statusFilter, locationFilter, priorityFilter]);
 
   const isSearchResultEmpty = useMemo(() => {
-    return filteredTasks.length === 0 && (search.length > 0 || hasFilters);
-  }, [filteredTasks.length, hasFilters, search.length]);
+    return filteredTasks.length === 0 && (search.length > 0 || hasFilter);
+  }, [filteredTasks.length, hasFilter, search.length]);
 
   const locationsFilter = useMemo(() => {
     const locations = tasks.map((task) => task.location);
@@ -118,15 +109,17 @@ export function TasksProvider({ children }: TasksProviderProps) {
     doneTasks,
     isSearchResultEmpty,
     locationsFilter,
-    hasFilters,
-    addTask,
-    deleteTask,
-    editTask,
+    hasFilter,
+    statusFilter,
+    locationFilter,
+    priorityFilter,
     handleSearch,
     handleStatusFilter,
     handleLocationFilter,
     handlePriorityFilter,
     clearFilters,
+    handleTasksChange,
+    editTask,
   };
 
   return (

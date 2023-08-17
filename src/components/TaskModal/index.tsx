@@ -80,15 +80,6 @@ export default function TaskModal({ task, isOpen, onClose }: TaskModalProps) {
 
             <HStack spacing={4}>
               <HStack color="#bfbebd">
-                <Icon as={DescriptionIcon} />
-                <Text>Description</Text>
-              </HStack>
-
-              <Text color="#37352f">{task.description}</Text>
-            </HStack>
-
-            <HStack spacing={4}>
-              <HStack color="#bfbebd">
                 <Icon as={AttachmentsIcon} />
                 <Text>Attachments</Text>
               </HStack>
@@ -103,6 +94,15 @@ export default function TaskModal({ task, isOpen, onClose }: TaskModalProps) {
               </HStack>
 
               <PriorityBadge priority={task.priority} />
+            </HStack>
+
+            <HStack spacing={4} align="start">
+              <HStack color="#bfbebd">
+                <Icon as={DescriptionIcon} />
+                <Text>Description</Text>
+              </HStack>
+
+              <Text color="#37352f">{task.description}</Text>
             </HStack>
           </VStack>
         </ModalBody>
